@@ -56,7 +56,7 @@ window.addEventListener("keyup", (e) => {
 });
 
 
-// Touch Controls
+// Select touch controls
 const leftBtn = document.querySelector("#left-btn");
 const rightBtn = document.querySelector("#right-btn");
 const jumpBtn = document.querySelector("#jump-btn");
@@ -76,16 +76,19 @@ leftBtn.addEventListener("touchend", () => (touchKeys.left = false));
 rightBtn.addEventListener("touchstart", () => (touchKeys.right = true));
 rightBtn.addEventListener("touchend", () => (touchKeys.right = false));
 
-jumpBtn.addEventListener("touchstart", () => (touchKeys.jump = true));
+jumpBtn.addEventListener("touchstart", () => {
+  if (!touchKeys.jump) {
+    touchKeys.jump = true;
+  }
+});
 jumpBtn.addEventListener("touchend", () => (touchKeys.jump = false));
 
 flyBtn.addEventListener("touchstart", () => {
   touchKeys.fly = !touchKeys.fly; // Toggle flying
   isFlying = touchKeys.fly; // Sync with the game state
 });
-flyBtn.addEventListener("touchend", () => (touchKeys.fly = false));
 
-// Update Game Loop to Include Touch Controls
+// Update Game Logic to Incorporate Touch Controls
 function gameLoop() {
   if (isPaused || isGameOver) return; // Pause the game if isPaused is true
 
@@ -130,6 +133,10 @@ function gameLoop() {
   // Horizontal Movement
   if (keys["ArrowRight"] || touchKeys.right) robotX += 5;
   if (keys["ArrowLeft"] || touchKeys.left) robotX -= 5;
+
+  // Continue the rest of the collision and rendering logic...
+}
+
 
   // Check collisions for coins, power-ups, and enemies
   coins.forEach((coin, index) => {
@@ -207,7 +214,7 @@ function gameLoop() {
   moveEnemies();
 
   requestAnimationFrame(gameLoop);
-}
+
 
 
 // Helper: Check Collision
