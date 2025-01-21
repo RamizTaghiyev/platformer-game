@@ -2,25 +2,34 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #87cefa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #87cefa; /* Sky-blue background */
+  height: 100vh; /* Make the body fill the viewport height */
+  width: 100vw; /* Make the body fill the viewport width */
 }
 
 #game {
   position: relative;
-  width: 800px;
-  height: 400px;
+  max-width: 90vw; /* Limit width to 90% of the viewport width */
+  max-height: 90vh; /* Limit height to 90% of the viewport height */
+  width: 800px; /* Default game width */
+  height: 400px; /* Default game height */
   margin: 0 auto;
   overflow: hidden;
-  border: 2px solid #000;
-  background-color: #cce7ff;
+  border: 10px solid #000; /* Black border for the game area */
+  background-color: #cce7ff; /* Light-blue game background */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Optional shadow for effect */
 }
 
 #level {
   position: relative;
   width: 8000px; /* Width of the game level */
-  height: 400px; /* Height of the game area */
+  height: 100%; /* Match the height of the game area */
   background-color: lightblue; /* Background color */
 }
+
 
 #robot {
   position: absolute;
@@ -227,52 +236,29 @@ body {
 }
 
 
-/* Goalpost */
-#goalpost {
-  position: absolute;
-  width: 40px;
-  height: 100px;
-  background-color: #f39c12; /* Orange color */
-  border: 3px solid #e67e22;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-/* Congratulations Screen */
-#congratulations-screen {
+#touch-controls {
   position: fixed;
-  top: 50%;
+  bottom: 20px;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  text-align: center;
-  padding: 30px;
-  border-radius: 10px;
-  z-index: 1000; /* Make it appear above everything */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 1000;
 }
 
-#congratulations-screen h1 {
-  margin: 0 0 20px;
-  font-size: 36px;
-}
-
-#congratulations-screen p {
-  font-size: 18px;
-  margin: 0 0 20px;
-}
-
-#congratulations-screen button {
-  font-size: 20px;
-  padding: 10px 20px;
-  border: none;
+#touch-controls button {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
   background-color: #4caf50;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   color: white;
   cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
 }
 
-#congratulations-screen button:hover {
-  background-color: #45a049;
+#touch-controls button:active {
+  transform: scale(0.9);
 }

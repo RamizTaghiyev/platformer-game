@@ -55,6 +55,161 @@ window.addEventListener("keyup", (e) => {
   if (!isGameOver) keys[e.key] = false;
 });
 
+
+// Touch Controls
+const leftBtn = document.querySelector("#left-btn");
+const rightBtn = document.querySelector("#right-btn");
+const jumpBtn = document.querySelector("#jump-btn");
+const flyBtn = document.querySelector("#fly-btn");
+
+let touchKeys = {
+  left: false,
+  right: false,
+  jump: false,
+  fly: false,
+};
+
+// Event Listeners for Touch Buttons
+leftBtn.addEventListener("touchstart", () => (touchKeys.left = true));
+leftBtn.addEventListener("touchend", () => (touchKeys.left = false));
+
+rightBtn.addEventListener("touchstart", () => (touchKeys.right = true));
+rightBtn.addEventListener("touchend", () => (touchKeys.right = false));
+
+jumpBtn.addEventListener("touchstart", () => (touchKeys.jump = true));
+jumpBtn.addEventListener("touchend", () => (touchKeys.jump = false));
+
+flyBtn.addEventListener("touchstart", () => {
+  touchKeys.fly = !touchKeys.fly; // Toggle flying
+  isFlying = touchKeys.fly; // Sync with the game state
+});
+flyBtn.addEventListener("touchend", () => (touchKeys.fly = false));
+
+// Update Game Loop to Include Touch Controls
+function gameLoop() {
+  if (isPaused || isGameOver) return; // Pause the game if isPaused is true
+
+  if (isFlying) {
+    // Flying controls
+    if (keys["ArrowUp"] || touchKeys.jump) robotY -= 5; // Move up
+    if (keys["ArrowDown"]) robotY += 5; // Move down
+  } else {
+    // Gravity and jumping
+    velocityY += 0.8; // Gravity
+    robotY += velocityY;
+
+    if ((keys["ArrowUp"] || touchKeys.jump) && jumpCount < 2) {
+      velocityY = -12;
+      jumpCount++;
+      touchKeys.jump = false; // Reset jump after touch
+    }
+
+    // Platform Collision for Normal Movement
+    let onPlatform = false;
+    platforms.forEach((platform) => {
+      const platX = parseInt(platform.style.left);
+      const platY = parseInt(platform.style.top);
+      const platW = parseInt(platform.style.width);
+      const platH = 10;
+
+      if (
+        checkCollision(robotX, robotY, 40, 60, platX, platY, platW, platH) &&
+        velocityY >= 0
+      ) {
+        robotY = platY - 60;
+        velocityY = 0;
+        onPlatform = true;
+      }
+    });
+
+    if (onPlatform || robotY >= 390) {
+      jumpCount = 0; // Reset jump count
+    }
+  }
+
+  // Horizontal Movement
+  if (keys["ArrowRight"] || touchKeys.right) robotX += 5;
+  if (keys["ArrowLeft"] || touchKeys.left) robotX -= 5;
+
+  // Check collisions for coins, power-ups, and enemies
+  coins.forEach((coin, index) => {
+    const coinX = parseInt(coin.style.left);
+    const coinY = parseInt(coin.style.top);
+
+    if (checkCollision(robotX, robotY, 40, 60, coinX, coinY, 20, 20)) {
+      coin.remove();
+      coins.splice(index, 1);
+      score += 10;
+      updateScore();
+    }
+  });
+
+  powerUps.forEach((powerUp, index) => {
+    const parentElement = powerUp.parentElement;
+
+    if (!parentElement || !parentElement.style.left || !parentElement.style.top) {
+      return; // Skip if missing positioning data
+    }
+
+    const powerUpX = parseInt(parentElement.style.left, 10);
+    const powerUpY = parseInt(parentElement.style.top, 10);
+
+    if (checkCollision(robotX, robotY, 40, 60, powerUpX, powerUpY, 30, 30)) {
+      // Restore health by 25%, but cap it at 100%
+      health = Math.min(health + 25, 100);
+      updateHealthBar();
+
+      // Remove the power-up from the game
+      parentElement.remove();
+      powerUps.splice(index, 1);
+    }
+  });
+
+  // Goalpost Collision
+  const goalpost = document.querySelector("#goalpost");
+  const goalpostX = parseInt(goalpost.style.left);
+  const goalpostY = parseInt(goalpost.style.top);
+
+  if (checkCollision(robotX, robotY, 40, 60, goalpostX, goalpostY, 40, 100)) {
+    isPaused = true; // Pause the game
+    document.querySelector("#congratulations-screen").style.display = "flex";
+  }
+
+  enemies.forEach((enemy) => {
+    const enemyX = parseInt(enemy.style.left);
+    const enemyY = parseInt(enemy.style.top);
+
+    if (
+      checkCollision(robotX, robotY, 40, 60, enemyX, enemyY, 40, 40) &&
+      Date.now() - lastDamageTime > damageCooldown // Check cooldown
+    ) {
+      health -= 20;
+      lastDamageTime = Date.now();
+      updateHealthBar();
+
+      if (health <= 0) {
+        endGame();
+      }
+    }
+  });
+
+  if (robotY > 400) {
+    endGame();
+  }
+
+  // Camera and Player Position Updates
+  cameraOffsetX = Math.max(0, Math.min(robotX - 400, 8000 - 800));
+  level.style.transform = `translateX(${-cameraOffsetX}px)`;
+
+  robot.style.left = `${robotX}px`;
+  robot.style.top = `${robotY}px`;
+
+  moveEnemies();
+
+  requestAnimationFrame(gameLoop);
+}
+
+
 // Helper: Check Collision
 function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
   return (
@@ -92,19 +247,24 @@ function restartGame() {
   updateHealthBar();
 
   // Restore all coins
-  coins.forEach((coin) => level.appendChild(coin));
+  coins.forEach((coin) => {
+    if (!level.contains(coin)) {
+      level.appendChild(coin); // Re-add the coin if it was collected
+    }
+  });
 
-  // Restore power-ups
-  const powerUpContainers = document.querySelectorAll(".health-container");
-  powerUpContainers.forEach((container) => {
-    if (!level.contains(container)) {
-      level.appendChild(container);
+  // Restore all power-ups
+  powerUps.forEach((powerUp) => {
+    const parentElement = powerUp.parentElement;
+    if (!level.contains(parentElement)) {
+      level.appendChild(parentElement); // Re-add the power-up if it was collected
     }
   });
 
   // Reset enemies
   enemies.forEach((enemy) => level.appendChild(enemy));
 }
+
 
 // End the Game
 function endGame() {
@@ -213,6 +373,10 @@ function gameLoop() {
     }
   });
 
+
+
+
+  
   // Goalpost Collision
   const goalpost = document.querySelector("#goalpost");
   const goalpostX = parseInt(goalpost.style.left);
@@ -259,11 +423,12 @@ function gameLoop() {
 
 // Event Listeners for Buttons
 startBtn.addEventListener("click", () => {
-  restartGame(); // Reset the game
+  restartGame(); // Reset the game, including coins and power-ups
   mainMenu.style.display = "none"; // Hide the menu
   isPaused = false; // Unpause the game
   requestAnimationFrame(gameLoop); // Start the game loop
 });
+
 
 continueBtn.addEventListener("click", () => {
   if (!isGameOver) {
