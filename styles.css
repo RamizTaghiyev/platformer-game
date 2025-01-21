@@ -1,0 +1,278 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #87cefa;
+}
+
+#game {
+  position: relative;
+  width: 800px;
+  height: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 2px solid #000;
+  background-color: #cce7ff;
+}
+
+#level {
+  position: relative;
+  width: 8000px; /* Width of the game level */
+  height: 400px; /* Height of the game area */
+  background-color: lightblue; /* Background color */
+}
+
+#robot {
+  position: absolute;
+  width: 40px;
+  height: 60px;
+  background-color: #555;
+  border: 2px solid #000;
+  border-radius: 5px;
+}
+
+#robot::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.coin {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: gold;
+  border-radius: 50%;
+  border: 2px solid #000;
+}
+
+.enemy {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background-color: red;
+  border: 2px solid #000;
+  border-radius: 5px;
+}
+
+.platform {
+  position: absolute;
+  height: 10px;
+  background-color: #8b4513;
+}
+
+.ground {
+  position: absolute;
+  height: 10px;
+  background-color: #654321;
+}
+
+
+#scoreboard {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #888;
+  z-index: 10;
+}
+
+#health-bar {
+  position: absolute;
+  top: 10px;
+  right: 10px; /* Move the health bar to the right */
+  width: 200px;
+  height: 20px;
+  background-color: #ccc;
+  border: 2px solid #000;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+#health {
+  height: 100%;
+  width: 100%;
+  background-color: #4caf50; /* Green for full health */
+  border-radius: 3px;
+}
+
+
+.power-up {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: #00c8ff; /* Bright blue for health restore */
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00c8ff;
+}
+
+/* Power-up styles */
+/* Health Container */
+.health-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center-align the label and orb */
+  justify-content: flex-start; /* Ensure text is above the orb */
+}
+
+/* Health Label */
+.health-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  margin-bottom: 5px; /* Space between the label and orb */
+  position: relative;
+  transform: translateY(-15px); /* Move the label higher */
+}
+
+/* Power-Up Orb */
+.power-up {
+  width: 30px;
+  height: 30px;
+  background-color: #00c8ff; /* Bright blue */
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00c8ff;
+}
+
+
+/* Main Menu */
+#main-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above everything */
+  color: white;
+  text-align: center;
+}
+
+#main-menu h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+#main-menu button {
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50; /* Green */
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+#main-menu button:hover {
+  transform: scale(1.1); /* Button grows slightly on hover */
+}
+
+#main-menu button:active {
+  transform: scale(1.05); /* Button shrinks slightly on click */
+}
+
+
+#controls {
+  position: fixed; /* Fixed position to stay at the bottom-left corner */
+  bottom: 10px; /* Distance from the bottom of the viewport */
+  left: 10px; /* Distance from the left of the viewport */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  width: calc(100% - 30px); /* Adjust width for spacing */
+  max-width: 300px; /* Limit maximum width */
+  text-align: left;
+  z-index: 100; /* Ensure it stays above other elements */
+}
+
+#controls h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+#controls ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+#controls li {
+  margin: 5px 0;
+}
+
+
+/* Goalpost */
+#goalpost {
+  position: absolute;
+  width: 40px;
+  height: 100px;
+  background-color: #f39c12; /* Orange color */
+  border: 3px solid #e67e22;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Congratulations Screen */
+#congratulations-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  padding: 30px;
+  border-radius: 10px;
+  z-index: 1000; /* Make it appear above everything */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+#congratulations-screen h1 {
+  margin: 0 0 20px;
+  font-size: 36px;
+}
+
+#congratulations-screen p {
+  font-size: 18px;
+  margin: 0 0 20px;
+}
+
+#congratulations-screen button {
+  font-size: 20px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+#congratulations-screen button:hover {
+  background-color: #45a049;
+}
