@@ -78,7 +78,8 @@ body {
 .ground {
   position: absolute;
   height: 10px;
-  background-color: #654321;
+  background-color: #ff0000;
+  border: #000;
 }
 
 

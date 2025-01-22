@@ -189,11 +189,11 @@ function checkPowerUpCollision() {
   for (let i = powerUps.length - 1; i >= 0; i--) {
     const powerUp = powerUps[i];
 
-    // Ensure power-up has valid position values
+    // Get the bounding rectangles
     const powerUpRect = powerUp.getBoundingClientRect();
     const levelRect = level.getBoundingClientRect();
 
-    // Adjust positions to align with the game world's coordinates
+    // Align positions with the game world's coordinates
     const powerUpX = powerUpRect.left - levelRect.left;
     const powerUpY = powerUpRect.top - levelRect.top;
 
@@ -201,17 +201,19 @@ function checkPowerUpCollision() {
       health = Math.min(health + 25, 100); // Restore health
       updateHealthBar();
 
-      // Remove the power-up orb and its text
-      powerUp.remove();
-      powerUps.splice(i, 1);
-
-      const healthText = powerUp.nextElementSibling;
-      if (healthText && healthText.classList.contains("health-text")) {
-        healthText.remove();
+      // Remove the entire health container (orb + label)
+      const healthContainer = powerUp.closest(".health-container");
+      if (healthContainer) {
+        healthContainer.remove();
       }
+
+      // Remove the power-up from the array
+      powerUps.splice(i, 1);
     }
   }
 }
+
+
 
 function checkCoinCollision() {
   coins.forEach((coin, index) => {
