@@ -69,6 +69,33 @@ window.addEventListener("keyup", (e) => {
   if (!isGameOver) keys[e.key] = false;
 });
 
+
+function setupButtonListeners(button, direction) {
+  // Mouse events
+  button.addEventListener("mousedown", () => (keys[direction] = true));
+  button.addEventListener("mouseup", () => (keys[direction] = false));
+
+  // Touch events
+  button.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Prevent default touch behavior
+    keys[direction] = true;
+  });
+  button.addEventListener("touchend", (e) => {
+    e.preventDefault(); // Prevent default touch behavior
+    keys[direction] = false;
+  });
+}
+
+
+
+function toggleFlyMode() {
+  isFlying = !isFlying; // Toggle flying mode
+  velocityY = 0; // Reset vertical velocity when toggling flying mode
+  flyBtn.style.backgroundColor = isFlying ? "#ff4444" : "#4caf50"; // Toggle button color
+}
+
+
+
 // Button Input Handling
 function setupButtonListeners(button, direction) {
   button.addEventListener("mousedown", () => (keys[direction] = true));
