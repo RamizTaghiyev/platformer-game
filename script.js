@@ -28,6 +28,8 @@ const flyBtn = document.querySelector("#fly-btn");
 const gameOverScreen = document.querySelector("#game-over-screen");
 const restartGameButton = document.querySelector("#restart-game-button");
 const gameOverMainMenuButton = document.querySelector("#game-over-main-menu-button");
+const backgroundMusic = document.querySelector("#background-music");
+const muteBtn = document.querySelector("#mute-btn");
 
 // Game State Variables
 let robotX = 50;
@@ -88,6 +90,56 @@ function updateTimerDisplay() {
 
 function stopTimer() {
   clearInterval(timerInterval);
+}
+
+
+// Start Game Music
+function playMusic() {
+  backgroundMusic.volume = 0.5; // Set volume (0.0 to 1.0)
+  backgroundMusic.play();
+}
+
+// Stop Game Music
+function stopMusic() {
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0; // Reset to the beginning
+}
+
+// Play music when the game starts
+startBtn.addEventListener("click", () => {
+  playMusic();
+});
+
+// Stop music when showing the congratulations screen
+function checkGoalpostCollision() {
+  const goalpostX = parseInt(goalpost.style.left);
+  const goalpostY = parseInt(goalpost.style.top);
+
+  if (checkCollision(robotX, robotY, 40, 60, goalpostX, goalpostY, 40, 100)) {
+    isPaused = true;
+    stopTimer(); // Stop the timer
+    stopMusic(); // Stop the music
+    congratulationsScreen.style.display = "block";
+  }
+}
+
+// Stop music when the game is over
+function endGame() {
+  isGameOver = true;
+
+  // Stop movement and reset controls
+  velocityY = 0;
+  keys["ArrowRight"] = false;
+  keys["ArrowLeft"] = false;
+  isFlying = false; // Reset flying state
+  flyBtn.style.backgroundColor = "#4caf50"; // Reset fly button color
+
+  // Stop the music
+  stopMusic();
+
+  // Show Game Over Screen
+  gameOverScreen.style.display = "flex"; // Display the Game Over screen
+  isPaused = true; // Pause the game
 }
 
 
@@ -452,7 +504,15 @@ function moveEnemies() {
 }
 
 
-
+muteBtn.addEventListener("click", () => {
+  if (backgroundMusic.muted) {
+    backgroundMusic.muted = false;
+    muteBtn.textContent = "Mute";
+  } else {
+    backgroundMusic.muted = true;
+    muteBtn.textContent = "Unmute";
+  }
+});
 
 // Start Game
 startBtn.addEventListener("click", () => {

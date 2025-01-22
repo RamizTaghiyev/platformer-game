@@ -398,3 +398,28 @@ body {
   border: 1px solid #888;
   z-index: 10;
 }
+
+#mute-btn {
+  position: absolute;
+  top: 50px; /* Place it below the scoreboard and timer */
+  left: 10px; /* Align it with the scoreboard */
+  background-color: #ff4444; /* Red background for mute button */
+  color: white; /* White text color */
+  border: none; /* Remove default button border */
+  padding: 10px 20px; /* Add some padding */
+  font-size: 16px; /* Font size */
+  font-weight: bold; /* Make the text bold */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Add some shadow for depth */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+#mute-btn:hover {
+  background-color: #d32f2f; /* Slightly darker red on hover */
+}
+
+#mute-btn:active {
+  background-color: #b71c1c; /* Even darker red when pressed */
+  transform: scale(0.98); /* Slightly shrink the button on click */
+}
