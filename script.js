@@ -15,11 +15,19 @@ const goalpost = document.querySelector("#goalpost");
 const congratulationsScreen = document.querySelector("#congratulations-screen");
 const mainMenu = document.querySelector("#main-menu");
 const startBtn = document.querySelector("#start-btn");
-const backToMainMenuBtn = congratulationsScreen.querySelector("#back-to-main-menu"); // Added Back to Main Menu Button
+// Back to Main Menu Button
+const backToMainMenuBtn = document.querySelector("#main-menu-button");
+
+backToMainMenuBtn.addEventListener("click", () => {
+  location.reload(); // Reload the page to reset the game
+});
 const leftBtn = document.querySelector("#left-btn");
 const rightBtn = document.querySelector("#right-btn");
 const jumpBtn = document.querySelector("#jump-btn");
 const flyBtn = document.querySelector("#fly-btn");
+const gameOverScreen = document.querySelector("#game-over-screen");
+const restartGameButton = document.querySelector("#restart-game-button");
+const gameOverMainMenuButton = document.querySelector("#game-over-main-menu-button");
 
 // Game State Variables
 let robotX = 50;
@@ -69,26 +77,33 @@ function setupButtonListeners(button, direction) {
 setupButtonListeners(leftBtn, "ArrowLeft");
 setupButtonListeners(rightBtn, "ArrowRight");
 
-// Jump Button
-jumpBtn.addEventListener("mousedown", () => {
-  if (!isFlying && jumpCount < 2 && !isJumping) {
-    velocityY = -12;
-    jumpCount++;
-    isJumping = true; // Set jumping flag to prevent continuous jumping
-  }
-});
-jumpBtn.addEventListener("mouseup", () => {
-  isJumping = false; // Reset jumping flag
-});
-
 // Fly Button
 flyBtn.addEventListener("mousedown", () => {
-  isFlying = !isFlying;
-  velocityY = 0; // Reset vertical velocity
-  flyBtn.style.backgroundColor = isFlying ? "#ff4444" : "#4caf50"; // Toggle color
+  isFlying = !isFlying; // Toggle flying mode
+  velocityY = 0; // Reset vertical velocity when toggling flying mode
+  flyBtn.style.backgroundColor = isFlying ? "#ff4444" : "#4caf50"; // Toggle button color
 });
 
-// Game Loop
+// Jump Button (Works in flying mode and normal mode)
+jumpBtn.addEventListener("mousedown", () => {
+  if (isFlying) {
+    keys["ArrowUp"] = true; // Simulate "ArrowUp" for flying
+  } else if (jumpCount < 2 && !isJumping) {
+    velocityY = -12; // Perform jump
+    jumpCount++;
+    isJumping = true; // Prevent continuous jumping
+  }
+});
+
+jumpBtn.addEventListener("mouseup", () => {
+  if (isFlying) {
+    keys["ArrowUp"] = false; // Stop upward movement in flying mode
+  } else {
+    isJumping = false; // Reset jumping flag in normal mode
+  }
+});
+
+
 function gameLoop() {
   if (isPaused || isGameOver) return;
 
@@ -156,6 +171,8 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
+
+
 // Collision Check Functions
 function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
   return (
@@ -214,6 +231,33 @@ function checkPowerUpCollision() {
 }
 
 
+// Function to generate spikes
+function generateSpikes() {
+  const spikeCount = 50; // Number of spikes to generate
+  const floorY = 390; // Position spikes at the floor level
+
+  for (let i = 0; i < spikeCount; i++) {
+    const spike = document.createElement("div");
+
+    // Randomize size and color
+    const width = Math.random() * 10 + 10; // Width between 10px and 20px
+    const height = Math.random() * 20 + 20; // Height between 20px and 40px
+    const left = Math.random() * 8000; // Random position along the floor
+    const colorClass = Math.random() > 0.5 ? "dark-red" : ""; // Alternate colors
+
+    spike.classList.add("spike", colorClass);
+    spike.style.borderLeftWidth = `${width / 2}px`;
+    spike.style.borderRightWidth = `${width / 2}px`;
+    spike.style.borderBottomWidth = `${height}px`;
+    spike.style.left = `${left}px`;
+    spike.style.bottom = `${floorY}px`;
+
+    // Append spike to the game level
+    level.appendChild(spike);
+  }
+}
+
+
 
 function checkCoinCollision() {
   coins.forEach((coin, index) => {
@@ -265,11 +309,40 @@ function restartGame() {
   congratulationsScreen.style.display = "none";
 }
 
+// Event Listener for Restart Button
+restartGameButton.addEventListener("click", () => {
+  restartGame(); // Reset the level without showing the main menu
+  gameOverScreen.style.display = "none"; // Hide Game Over screen
+  isPaused = false; // Resume the game
+  gameLoop(); // Restart the game loop
+});
+
+// Event Listener for Back to Main Menu Button
+gameOverMainMenuButton.addEventListener("click", () => {
+  location.reload(); // Reload the page to go back to the main menu
+});
+
+// Updated End Game Function
 function endGame() {
   isGameOver = true;
-  alert("Game Over!");
-  restartGame();
+
+  // Stop movement and reset controls
+  velocityY = 0;
+  keys["ArrowRight"] = false;
+  keys["ArrowLeft"] = false;
+  isFlying = false; // Reset flying state
+  flyBtn.style.backgroundColor = "#4caf50"; // Reset fly button color
+
+  // Clear all keys to prevent unintended movement
+  for (let key in keys) {
+    keys[key] = false;
+  }
+
+  // Show Game Over Screen
+  gameOverScreen.style.display = "flex"; // Display the Game Over screen
+  isPaused = true; // Pause the game
 }
+
 
 // Move Enemies
 function moveEnemies() {
@@ -284,6 +357,9 @@ function moveEnemies() {
     enemy.element.style.left = `${enemy.currentX}px`;
   });
 }
+
+
+
 
 // Start Game
 startBtn.addEventListener("click", () => {
@@ -301,3 +377,6 @@ backToMainMenuBtn.addEventListener("click", () => {
 // Initialize
 updateScore();
 updateHealthBar();
+// Call generateSpikes to create spikes at the start
+generateSpikes();
+

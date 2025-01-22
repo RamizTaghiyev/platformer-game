@@ -315,3 +315,58 @@ body {
 #touch-controls button:active {
   transform: scale(0.9);
 }
+
+
+.spike {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent; /* Default size */
+  border-right: 10px solid transparent; /* Default size */
+  border-bottom: 20px solid red; /* Default color */
+}
+
+.spike.dark-red {
+  border-bottom-color: darkred; /* Dark red color for variety */
+}
+
+
+#game-over-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.9); /* Black background with transparency */
+  color: white;
+  text-align: center;
+  padding: 30px;
+  border-radius: 10px;
+  z-index: 1000; /* Ensure it appears above everything */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+#game-over-screen h1 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+#game-over-screen p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+#game-over-screen button {
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#game-over-screen button:hover {
+  background-color: #45a049;
+}
