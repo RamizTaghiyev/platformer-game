@@ -95,24 +95,53 @@ function toggleFlyMode() {
 }
 
 
-
 // Button Input Handling
 function setupButtonListeners(button, direction) {
+  // Mouse events
   button.addEventListener("mousedown", () => (keys[direction] = true));
   button.addEventListener("mouseup", () => (keys[direction] = false));
+
+  // Touch events
+  button.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Prevent default touch behavior (e.g., scrolling)
+    keys[direction] = true;
+  });
+  button.addEventListener("touchend", (e) => {
+    e.preventDefault(); // Prevent default touch behavior
+    keys[direction] = false;
+  });
 }
+
+// Setup left and right button listeners
 setupButtonListeners(leftBtn, "ArrowLeft");
 setupButtonListeners(rightBtn, "ArrowRight");
 
-// Fly Button
-flyBtn.addEventListener("mousedown", () => {
+// Fly Button with Touch Support
+flyBtn.addEventListener("mousedown", toggleFlyMode);
+flyBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault(); // Prevent default touch behavior
+  toggleFlyMode();
+});
+
+function toggleFlyMode() {
   isFlying = !isFlying; // Toggle flying mode
   velocityY = 0; // Reset vertical velocity when toggling flying mode
   flyBtn.style.backgroundColor = isFlying ? "#ff4444" : "#4caf50"; // Toggle button color
+}
+
+// Jump Button with Touch Support
+jumpBtn.addEventListener("mousedown", () => handleJump());
+jumpBtn.addEventListener("mouseup", () => handleJumpEnd());
+jumpBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault(); // Prevent default touch behavior
+  handleJump();
+});
+jumpBtn.addEventListener("touchend", (e) => {
+  e.preventDefault(); // Prevent default touch behavior
+  handleJumpEnd();
 });
 
-// Jump Button (Works in flying mode and normal mode)
-jumpBtn.addEventListener("mousedown", () => {
+function handleJump() {
   if (isFlying) {
     keys["ArrowUp"] = true; // Simulate "ArrowUp" for flying
   } else if (jumpCount < 2 && !isJumping) {
@@ -120,15 +149,15 @@ jumpBtn.addEventListener("mousedown", () => {
     jumpCount++;
     isJumping = true; // Prevent continuous jumping
   }
-});
+}
 
-jumpBtn.addEventListener("mouseup", () => {
+function handleJumpEnd() {
   if (isFlying) {
     keys["ArrowUp"] = false; // Stop upward movement in flying mode
   } else {
     isJumping = false; // Reset jumping flag in normal mode
   }
-});
+}
 
 
 
