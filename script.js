@@ -207,6 +207,19 @@ function gameLoop() {
   if (keys["ArrowRight"]) robotX += 5;
   if (keys["ArrowLeft"]) robotX -= 5;
 
+  // Adjust camera for mobile devices
+  const isMobile = window.innerWidth <= 768; // Detect mobile devices
+  if (isMobile) {
+    cameraOffsetX = Math.max(0, robotX - window.innerWidth / 2); // Center robot in the middle
+  } else {
+    cameraOffsetX = Math.max(0, Math.min(robotX - 400, 8000 - 800)); // Original logic for laptops
+  }
+
+  // Update camera and robot position
+  level.style.transform = `translateX(${-cameraOffsetX}px)`; // Apply camera offset
+  robot.style.left = `${robotX}px`;
+  robot.style.top = `${robotY}px`;
+
   // Check Collisions
   checkEnemyCollision();
   checkPowerUpCollision();
@@ -217,12 +230,6 @@ function gameLoop() {
   if (robotY > 400) {
     endGame();
   }
-
-  // Update Camera and Robot Position
-  cameraOffsetX = Math.max(0, Math.min(robotX - 400, 8000 - 800));
-  level.style.transform = `translateX(${-cameraOffsetX}px)`;
-  robot.style.left = `${robotX}px`;
-  robot.style.top = `${robotY}px`;
 
   // Enemy Movement
   moveEnemies();
