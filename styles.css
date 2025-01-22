@@ -1,3 +1,4 @@
+/* General Body Styling */
 body {
   margin: 0;
   padding: 0;
@@ -6,10 +7,11 @@ body {
   justify-content: center;
   align-items: center;
   background-color: #87cefa; /* Sky-blue background */
-  height: 100vh; /* Make the body fill the viewport height */
-  width: 100vw; /* Make the body fill the viewport width */
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
 }
 
+/* Game Container */
 #game {
   position: relative;
   max-width: 90vw; /* Limit width to 90% of the viewport width */
@@ -18,19 +20,20 @@ body {
   height: 400px; /* Default game height */
   margin: 0 auto;
   overflow: hidden;
-  border: 10px solid #000; /* Black border for the game area */
-  background-color: #cce7ff; /* Light-blue game background */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Optional shadow for effect */
+  border: 10px solid #000; /* Black border */
+  background-color: #cce7ff; /* Light-blue background */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Shadow effect */
 }
 
+/* Level Styling */
 #level {
   position: relative;
-  width: 8000px; /* Width of the game level */
-  height: 100%; /* Match the height of the game area */
+  width: 8000px; /* Full game level width */
+  height: 100%; /* Match game height */
   background-color: lightblue; /* Background color */
 }
 
-
+/* Robot Styling */
 #robot {
   position: absolute;
   width: 40px;
@@ -51,6 +54,7 @@ body {
   border-radius: 50%;
 }
 
+/* Coin Styling */
 .coin {
   position: absolute;
   width: 20px;
@@ -60,6 +64,7 @@ body {
   border: 2px solid #000;
 }
 
+/* Enemy Styling */
 .enemy {
   position: absolute;
   width: 40px;
@@ -69,20 +74,21 @@ body {
   border-radius: 5px;
 }
 
+/* Platform Styling */
 .platform {
   position: absolute;
   height: 10px;
   background-color: #8b4513;
 }
 
+/* Ground Styling */
 .ground {
   position: absolute;
   height: 10px;
   background-color: #ff0000;
-  border: #000;
 }
 
-
+/* Scoreboard Styling */
 #scoreboard {
   position: absolute;
   top: 10px;
@@ -97,10 +103,11 @@ body {
   z-index: 10;
 }
 
+/* Health Bar */
 #health-bar {
   position: absolute;
   top: 10px;
-  right: 10px; /* Move the health bar to the right */
+  right: 10px;
   width: 200px;
   height: 20px;
   background-color: #ccc;
@@ -116,7 +123,7 @@ body {
   border-radius: 3px;
 }
 
-
+/* Power-Up Styling */
 .power-up {
   position: absolute;
   width: 30px;
@@ -127,37 +134,22 @@ body {
   box-shadow: 0 0 10px #00c8ff;
 }
 
-/* Power-up styles */
-/* Health Container */
+/* Health Container Styling */
 .health-container {
   position: absolute;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center-align the label and orb */
-  justify-content: flex-start; /* Ensure text is above the orb */
+  align-items: center;
+  justify-content: flex-start;
 }
 
-/* Health Label */
 .health-label {
   font-size: 16px;
   font-weight: bold;
   color: white;
   text-shadow: 1px 1px 2px black;
-  margin-bottom: 5px; /* Space between the label and orb */
-  position: relative;
-  transform: translateY(-15px); /* Move the label higher */
+  margin-bottom: 5px;
 }
-
-/* Power-Up Orb */
-.power-up {
-  width: 30px;
-  height: 30px;
-  background-color: #00c8ff; /* Bright blue */
-  border: 2px solid #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 10px #00c8ff;
-}
-
 
 /* Main Menu */
 #main-menu {
@@ -188,185 +180,104 @@ body {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50;
   color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s ease;
 }
 
 #main-menu button:hover {
-  transform: scale(1.1); /* Button grows slightly on hover */
+  transform: scale(1.1);
 }
 
-#main-menu button:active {
-  transform: scale(1.05); /* Button shrinks slightly on click */
-}
-
-
-
-/* Goalpost */
-#goalpost {
-  position: absolute;
-  width: 40px;
-  height: 100px;
-  background-color: #f39c12; /* Orange color */
-  border: 3px solid #e67e22;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-/* Congratulations Screen */
-#congratulations-screen {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  text-align: center;
-  padding: 30px;
-  border-radius: 10px;
-  z-index: 1000; /* Make it appear above everything */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-#congratulations-screen h1 {
-  margin: 0 0 20px;
-  font-size: 36px;
-}
-
-#congratulations-screen p {
-  font-size: 18px;
-  margin: 0 0 20px;
-}
-
-#congratulations-screen button {
-  font-size: 20px;
-  padding: 10px 20px;
-  border: none;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-}
-
-#congratulations-screen button:hover {
-  background-color: #45a049;
-}
-
-
-#controls {
-  position: fixed; /* Fixed position to stay at the bottom-left corner */
-  bottom: 10px; /* Distance from the bottom of the viewport */
-  left: 10px; /* Distance from the left of the viewport */
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
-  color: white;
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  width: calc(100% - 30px); /* Adjust width for spacing */
-  max-width: 300px; /* Limit maximum width */
-  text-align: left;
-  z-index: 100; /* Ensure it stays above other elements */
-}
-
-#controls h3 {
-  margin: 0 0 5px;
-  font-size: 16px;
-  text-decoration: underline;
-}
-
-#controls ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
-#controls li {
-  margin: 5px 0;
-}
-
-
-#touch-controls {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  z-index: 1000;
-}
-
-#touch-controls button {
-  width: 60px;
-  height: 60px;
-  font-size: 24px;
-  background-color: #4caf50;
-  border: none;
-  border-radius: 50%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  color: white;
-  cursor: pointer;
-}
-
-#touch-controls button:active {
-  transform: scale(0.9);
-}
-
-
-.spike {
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent; /* Default size */
-  border-right: 10px solid transparent; /* Default size */
-  border-bottom: 20px solid red; /* Default color */
-}
-
-.spike.dark-red {
-  border-bottom-color: darkred; /* Dark red color for variety */
-}
-
-
+/* Game Over Screen */
 #game-over-screen {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.9); /* Black background with transparency */
+  background-color: rgba(0, 0, 0, 0.9);
   color: white;
   text-align: center;
   padding: 30px;
   border-radius: 10px;
-  z-index: 1000; /* Ensure it appears above everything */
+  z-index: 1000;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 #game-over-screen h1 {
   font-size: 36px;
-  margin-bottom: 20px;
-}
-
-#game-over-screen p {
-  font-size: 18px;
-  margin-bottom: 20px;
 }
 
 #game-over-screen button {
   font-size: 20px;
   padding: 10px 20px;
   margin: 10px;
-  border: none;
-  border-radius: 5px;
   background-color: #4caf50;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  border: none;
+  border-radius: 5px;
 }
 
-#game-over-screen button:hover {
-  background-color: #45a049;
+/* Responsive Design */
+@media (max-width: 768px) {
+  #game {
+    width: 100vw; /* Full viewport width */
+    height: 70vh; /* 70% of the viewport height */
+  }
+
+  #scoreboard {
+    font-size: 16px; /* Adjust font size */
+  }
+
+  #health-bar {
+    width: 150px; /* Adjust health bar width */
+    height: 15px;
+  }
+
+  #main-menu h1 {
+    font-size: 32px; /* Smaller font size for headings */
+  }
+
+  #main-menu button {
+    font-size: 16px; /* Smaller font size for buttons */
+    padding: 8px 15px;
+  }
+
+  #touch-controls button {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  #game {
+    height: 60vh; /* Smaller height for very small screens */
+  }
+
+  #scoreboard {
+    font-size: 14px;
+  }
+
+  #health-bar {
+    width: 120px;
+    height: 12px;
+  }
+
+  #main-menu h1 {
+    font-size: 28px;
+  }
+
+  #main-menu button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  #touch-controls button {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
 }

@@ -104,6 +104,9 @@ jumpBtn.addEventListener("mouseup", () => {
 });
 
 
+
+
+
 function gameLoop() {
   if (isPaused || isGameOver) return;
 
