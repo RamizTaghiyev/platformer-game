@@ -202,6 +202,58 @@ body {
 }
 
 
+
+/* Goalpost */
+#goalpost {
+  position: absolute;
+  width: 40px;
+  height: 100px;
+  background-color: #f39c12; /* Orange color */
+  border: 3px solid #e67e22;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Congratulations Screen */
+#congratulations-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+  padding: 30px;
+  border-radius: 10px;
+  z-index: 1000; /* Make it appear above everything */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+#congratulations-screen h1 {
+  margin: 0 0 20px;
+  font-size: 36px;
+}
+
+#congratulations-screen p {
+  font-size: 18px;
+  margin: 0 0 20px;
+}
+
+#congratulations-screen button {
+  font-size: 20px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+#congratulations-screen button:hover {
+  background-color: #45a049;
+}
+
+
 #controls {
   position: fixed; /* Fixed position to stay at the bottom-left corner */
   bottom: 10px; /* Distance from the bottom of the viewport */
