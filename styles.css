@@ -33,7 +33,14 @@ body {
   position: relative;
   width: 8000px; /* Width of the game level */
   height: 100%; /* Match the height of the game area */
-  background-color: lightblue; /* Background color */
+  background: repeating-linear-gradient(
+    45deg,
+    cyan 0,
+    cyan 25px,
+    darkcyan 50px,
+    darkcyan 50px
+  );
+  background-size: 50px 50px; /* Define the size of each square */
 }
 
 
