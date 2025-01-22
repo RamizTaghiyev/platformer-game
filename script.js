@@ -237,7 +237,7 @@ function checkPowerUpCollision() {
 // Function to generate spikes
 function generateSpikes() {
   const spikeCount = 50; // Number of spikes to generate
-  const floorY = 390; // Position spikes at the floor level
+  const floorY = 40; // Position spikes at the floor level
 
   for (let i = 0; i < spikeCount; i++) {
     const spike = document.createElement("div");
