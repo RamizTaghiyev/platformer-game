@@ -43,6 +43,8 @@ let isPaused = true; // Start in the paused state
 let isFlying = false; // Flying mode toggle
 let lastDamageTime = 0; // Cooldown for damage
 const damageCooldown = 1000; // 1 second cooldown
+let timerInterval; // Interval for the timer
+let elapsedTime = 0; // Elapsed time in seconds
 
 // Enemy Movement Data
 const enemyData = enemies.map((enemy) => ({
@@ -68,6 +70,26 @@ window.addEventListener("keydown", (e) => {
 window.addEventListener("keyup", (e) => {
   if (!isGameOver) keys[e.key] = false;
 });
+
+
+function startTimer() {
+  elapsedTime = 0;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    elapsedTime++;
+    updateTimerDisplay();
+  }, 1000); // Update every second
+}
+
+function updateTimerDisplay() {
+  const timerElement = document.querySelector("#timer");
+  timerElement.textContent = `Time: ${elapsedTime}s`;
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
 
 
 function setupButtonListeners(button, direction) {
@@ -345,9 +367,11 @@ function checkGoalpostCollision() {
 
   if (checkCollision(robotX, robotY, 40, 60, goalpostX, goalpostY, 40, 100)) {
     isPaused = true;
+    stopTimer(); // Stop the timer
     congratulationsScreen.style.display = "block";
   }
 }
+
 
 // Update Functions
 function updateScore() {
@@ -372,8 +396,11 @@ function restartGame() {
   isPaused = false;
   updateScore();
   updateHealthBar();
+  stopTimer(); // Stop the previous timer
+  startTimer(); // Restart the timer
   congratulationsScreen.style.display = "none";
 }
+
 
 // Event Listener for Restart Button
 restartGameButton.addEventListener("click", () => {
@@ -432,8 +459,10 @@ startBtn.addEventListener("click", () => {
   restartGame();
   mainMenu.style.display = "none";
   isPaused = false;
+  startTimer(); // Start the timer
   gameLoop();
 });
+
 
 // Back to Main Menu Button
 backToMainMenuBtn.addEventListener("click", () => {
