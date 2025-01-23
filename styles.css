@@ -527,3 +527,19 @@ body {
   background-color: #b71c1c; /* Even darker red when pressed */
   transform: scale(0.98); /* Slightly smaller when clicked */
 }
+
+
+
+.red-enemy {
+  background-color: darkred;
+  border: 2px solid black;
+}
+
+
+.platform.level-2 {
+  background-color: #6b8e23; /* Example different color for Level 2 platforms */
+}
+
+.enemy.level-2 {
+  background-color: blue; /* Example different color for Level 2 enemies */
+}

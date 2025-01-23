@@ -375,6 +375,36 @@ function gameLoop() {
 
 
 
+function checkEnemyCollision() {
+  enemies.forEach((enemy) => {
+    const enemyX = parseInt(enemy.style.left);
+    const enemyY = parseInt(enemy.style.top);
+
+    if (
+      checkCollision(robotX, robotY, 40, 60, enemyX, enemyY, 40, 40) &&
+      Date.now() - lastDamageTime > damageCooldown
+    ) {
+      // If the enemy has the class "red-enemy", apply specific behavior
+      if (enemy.classList.contains("red-enemy")) {
+        console.log("Collided with a red enemy!");
+
+        // Example: End the game on collision with red-enemy
+        endGame();
+      } else {
+        // Default behavior for normal enemies
+        health -= 20;
+        lastDamageTime = Date.now();
+        updateHealthBar();
+        if (health <= 0) {
+          endGame();
+        }
+      }
+    }
+  });
+}
+
+
+
 // Collision Check Functions
 function checkCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
   return (
@@ -431,6 +461,8 @@ function checkPowerUpCollision() {
     }
   }
 }
+
+
 
 
 // Function to generate spikes
