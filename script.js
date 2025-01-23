@@ -35,6 +35,7 @@ const restartGameButton = document.querySelector("#restart-game-button");
 const gameOverMainMenuButton = document.querySelector("#game-over-main-menu-button");
 const backgroundMusic = document.querySelector("#background-music");
 const muteBtn = document.querySelector("#mute-btn");
+const maxProjectileDistance = 500; // Maximum distance a projectile can travel
 
 // Game State Variables
 let robotX = 50;
@@ -308,46 +309,126 @@ function shootProjectile() {
 
   const projectile = document.createElement("div");
   projectile.className = "projectile";
-  projectile.style.left = `${robotX + 20}px`; // Position it at the center of the robot
-  projectile.style.top = `${robotY + 30}px`; // Slightly below the robot's head
+
+  // Use robot's position relative to the game level
+  const robotRect = robot.getBoundingClientRect();
+  const levelRect = level.getBoundingClientRect();
+
+  // Set the initial position
+  projectile.style.left = `${robotRect.left - levelRect.left + 20}px`; // Slight offset from robot
+  projectile.style.top = `${robotRect.top - levelRect.top + 30}px`; // Slight offset for height
   level.appendChild(projectile);
 
+  // Debugging: Log the projectile creation
+  console.log("Projectile created at:", projectile.style.left, projectile.style.top);
+
+  // Add the projectile to the tracking array
   projectiles.push({
     element: projectile,
-    x: robotX + 20,
-    y: robotY + 30,
+    x: parseInt(projectile.style.left),
+    y: parseInt(projectile.style.top),
+    startX: parseInt(projectile.style.left),
     speed: 10, // Speed of the projectile
   });
 }
 
-// Handle projectile movement
+
+
+
+// Move projectiles and handle interactions
 function moveProjectiles() {
-  projectiles = projectiles.filter(({ element, x, y, speed }) => {
+  projectiles = projectiles.filter(({ element, x, y, startX, speed }) => {
+    // Move the projectile to the right
     x += speed;
+
+    // Update the DOM position
     element.style.left = `${x}px`;
 
-    // Remove projectile if it goes off-screen
-    if (x > 8000) {
-      element.remove();
-      return false;
+    // Debugging: Log the projectile position
+    console.log(`Projectile Position: ${x}, StartX: ${startX}, Speed: ${speed}`);
+
+    // Remove projectile if it travels beyond max distance
+    if (x - startX > maxProjectileDistance) {
+      console.log("Projectile removed: Max distance reached");
+      element.remove(); // Remove from the DOM
+      return false; // Remove from the array
     }
-    return true;
+
+    // Check for collision with enemies
+    for (let i = 0; i < enemies.length; i++) {
+      const enemy = enemies[i];
+      const enemyRect = enemy.getBoundingClientRect();
+      const projectileRect = element.getBoundingClientRect();
+
+      if (
+        projectileRect.left < enemyRect.right &&
+        projectileRect.right > enemyRect.left &&
+        projectileRect.top < enemyRect.bottom &&
+        projectileRect.bottom > enemyRect.top &&
+        enemy.classList.contains("red-enemy") // Only target red enemies
+      ) {
+        // Debugging: Log collision
+        console.log("Projectile hit a red enemy!");
+
+        // Remove the enemy and projectile
+        enemy.remove();
+        element.remove();
+        enemies.splice(i, 1); // Remove enemy from the array
+        return false; // Remove projectile
+      }
+    }
+
+    return true; // Keep the projectile in the array
   });
 }
 
-// Shooting button event listeners
+
+
+let logInterval = 0;
+projectiles.forEach(({ x, startX, speed }) => {
+  logInterval++;
+  if (logInterval % 10 === 0) {
+    console.log(`Projectile Position: ${x}, StartX: ${startX}, Speed: ${speed}`);
+  }
+});
+
+
+// Initialize game with updated loop
+function initializeGame() {
+  updateScore();
+  updateHealthBar();
+  gameLoop(); // Start the main game loop
+}
+
+// Shooting event listeners
 shootBtn.addEventListener("mousedown", shootProjectile);
 shootBtn.addEventListener("touchstart", (e) => {
   e.preventDefault();
   shootProjectile();
 });
-
-// Add key listener for shooting
 window.addEventListener("keydown", (e) => {
   if (e.key === " " && !isPaused) shootProjectile();
 });
 
 
+
+
+
+
+
+// Game Initialization
+function initializeGame() {
+  // Other initialization logic
+  updateScore();
+  updateHealthBar();
+  gameLoop();
+}
+
+startBtn.addEventListener("click", () => {
+  initializeGame();
+  mainMenu.style.display = "none";
+  isPaused = false;
+});
 
 
 function gameLoop() {
@@ -412,11 +493,14 @@ function gameLoop() {
   checkPowerUpCollision();
   checkCoinCollision();
   checkGoalpostCollision();
+  moveProjectiles(); // Move projectiles and handle collisions
 
   // Check if Robot Falls Off the Level
   if (robotY > 400) {
     endGame();
   }
+  moveProjectiles(); // Move projectiles and handle collisions
+
 
   // Enemy Movement
   moveEnemies();
@@ -680,4 +764,5 @@ updateScore();
 updateHealthBar();
 // Call generateSpikes to create spikes at the start
 generateSpikes();
+gameLoop(); // Start the main game loop
 

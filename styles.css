@@ -549,11 +549,12 @@ body {
   position: absolute;
   width: 10px;
   height: 5px;
-  background-color: yellow; /* Yellow for visibility */
-  border: 1px solid #000;
+  background-color: yellow;
+  border: 1px solid black;
   border-radius: 3px;
   z-index: 10;
 }
+
 
 
 /* Added styles for the shoot button */
