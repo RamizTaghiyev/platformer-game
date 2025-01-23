@@ -543,3 +543,30 @@ body {
 .enemy.level-2 {
   background-color: blue; /* Example different color for Level 2 enemies */
 }
+
+
+.projectile {
+  position: absolute;
+  width: 10px;
+  height: 5px;
+  background-color: yellow; /* Yellow for visibility */
+  border: 1px solid #000;
+  border-radius: 3px;
+  z-index: 10;
+}
+
+
+/* Added styles for the shoot button */
+#touch-controls button#shoot-btn {
+  background-color: #ff5722;
+  color: white;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#touch-controls button#shoot-btn:active {
+  transform: scale(0.9);
+}
+
+/* Existing styles remain unchanged */

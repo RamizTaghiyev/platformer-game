@@ -6,6 +6,11 @@ const healthBar = document.querySelector("#health");
 const scoreboard = document.createElement("div");
 scoreboard.id = "scoreboard";
 game.appendChild(scoreboard);
+const shootBtn = document.createElement("button");
+shootBtn.id = "shoot-btn";
+shootBtn.innerText = "🔥";
+const touchControls = document.querySelector("#touch-controls");
+touchControls.appendChild(shootBtn);
 
 const coins = Array.from(document.querySelectorAll(".coin"));
 const enemies = Array.from(document.querySelectorAll(".enemy"));
@@ -47,6 +52,8 @@ let lastDamageTime = 0; // Cooldown for damage
 const damageCooldown = 1000; // 1 second cooldown
 let timerInterval; // Interval for the timer
 let elapsedTime = 0; // Elapsed time in seconds
+// Shooting Variables
+let projectiles = [];
 
 // Enemy Movement Data
 const enemyData = enemies.map((enemy) => ({
@@ -295,6 +302,50 @@ function stopTimer() {
 
 
 
+// Create and shoot a projectile
+function shootProjectile() {
+  if (isPaused || isGameOver) return;
+
+  const projectile = document.createElement("div");
+  projectile.className = "projectile";
+  projectile.style.left = `${robotX + 20}px`; // Position it at the center of the robot
+  projectile.style.top = `${robotY + 30}px`; // Slightly below the robot's head
+  level.appendChild(projectile);
+
+  projectiles.push({
+    element: projectile,
+    x: robotX + 20,
+    y: robotY + 30,
+    speed: 10, // Speed of the projectile
+  });
+}
+
+// Handle projectile movement
+function moveProjectiles() {
+  projectiles = projectiles.filter(({ element, x, y, speed }) => {
+    x += speed;
+    element.style.left = `${x}px`;
+
+    // Remove projectile if it goes off-screen
+    if (x > 8000) {
+      element.remove();
+      return false;
+    }
+    return true;
+  });
+}
+
+// Shooting button event listeners
+shootBtn.addEventListener("mousedown", shootProjectile);
+shootBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  shootProjectile();
+});
+
+// Add key listener for shooting
+window.addEventListener("keydown", (e) => {
+  if (e.key === " " && !isPaused) shootProjectile();
+});
 
 
 
