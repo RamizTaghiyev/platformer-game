@@ -74,14 +74,32 @@ window.addEventListener("keyup", (e) => {
 });
 
 
+function toggleTimer() {
+  if (isPaused) {
+    clearInterval(timerInterval); // Stop the timer
+    console.log("Timer paused."); // Debugging log
+  } else {
+    timerInterval = setInterval(() => {
+      elapsedTime++;
+      updateTimerDisplay();
+    }, 1000); // Resume the timer
+    console.log("Timer resumed."); // Debugging log
+  }
+}
+
+
+
+
+
 function startTimer() {
-  elapsedTime = 0;
+  elapsedTime = 0; // Reset the timer
   updateTimerDisplay();
   timerInterval = setInterval(() => {
     elapsedTime++;
     updateTimerDisplay();
-  }, 1000); // Update every second
+  }, 1000); // Start counting in seconds
 }
+
 
 function updateTimerDisplay() {
   const timerElement = document.querySelector("#timer");
@@ -116,12 +134,14 @@ function checkGoalpostCollision() {
   const goalpostY = parseInt(goalpost.style.top);
 
   if (checkCollision(robotX, robotY, 40, 60, goalpostX, goalpostY, 40, 100)) {
+    console.log("Goalpost reached!"); // Debug log
     isPaused = true;
-    stopTimer(); // Stop the timer
+    stopTimer(); // Ensure timer is stopped
     stopMusic(); // Stop the music
     congratulationsScreen.style.display = "block";
   }
 }
+
 
 // Stop music when the game is over
 function endGame() {
@@ -232,6 +252,48 @@ function handleJumpEnd() {
     isJumping = false; // Reset jumping flag in normal mode
   }
 }
+
+// Pause Button
+const pauseBtn = document.querySelector("#pause-btn");
+
+// Toggle Pause State
+pauseBtn.addEventListener("click", () => {
+  pauseGame();
+  if (isPaused) {
+    pauseBtn.textContent = "Resume"; // Change button text to "Resume"
+  } else {
+    pauseBtn.textContent = "Pause"; // Change button text to "Pause"
+  }
+});
+
+function pauseGame() {
+  isPaused = !isPaused; // Toggle the pause state
+
+  if (isPaused) {
+    stopTimer(); // Stop the timer when paused
+    console.log("Game Paused");
+  } else {
+    startTimer(); // Resume the timer when unpaused
+    console.log("Game Resumed");
+    gameLoop(); // Restart the game loop
+  }
+}
+
+function startTimer() {
+  clearInterval(timerInterval); // Clear any existing intervals
+  timerInterval = setInterval(() => {
+    if (!isPaused) { // Only increment the timer when the game is not paused
+      elapsedTime++;
+      updateTimerDisplay();
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval); // Clear the interval to stop the timer
+}
+
+
 
 
 
@@ -416,6 +478,7 @@ function checkCoinCollision() {
 function checkGoalpostCollision() {
   const goalpostX = parseInt(goalpost.style.left);
   const goalpostY = parseInt(goalpost.style.top);
+
 
   if (checkCollision(robotX, robotY, 40, 60, goalpostX, goalpostY, 40, 100)) {
     isPaused = true;

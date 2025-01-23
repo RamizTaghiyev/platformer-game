@@ -51,7 +51,86 @@ body {
   background-color: #555;
   border: 2px solid #000;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
+
+/* Head */
+#robot .head {
+  width: 25px;
+  height: 25px;
+  background-color: #333;
+  border: 2px solid #000;
+  border-radius: 50%;
+  margin-top: 5px;
+  position: relative;
+}
+
+/* Eyes */
+#robot .head .eye {
+  width: 5px;
+  height: 5px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 7px;
+}
+
+#robot .head .eye.left {
+  left: 5px;
+}
+
+#robot .head .eye.right {
+  right: 5px;
+}
+
+/* Torso */
+#robot .torso {
+  width: 30px;
+  height: 25px;
+  background-color: #444;
+  border: 2px solid #000;
+  margin-top: 2px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Arms */
+#robot .torso .arm {
+  width: 8px;
+  height: 18px;
+  background-color: #666;
+  border: 2px solid #000;
+  position: relative;
+  top: -2px;
+}
+
+#robot .torso .arm.left {
+  border-radius: 5px 0 0 5px;
+}
+
+#robot .torso .arm.right {
+  border-radius: 0 5px 5px 0;
+}
+
+/* Legs */
+#robot .legs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2px;
+  width: 100%;
+}
+
+#robot .legs .leg {
+  width: 10px;
+  height: 20px;
+  background-color: #555;
+  border: 2px solid #000;
+  border-radius: 3px;
+}
+
 
 #robot::before {
   content: '';
@@ -403,7 +482,7 @@ body {
   position: absolute;
   top: 50px; /* Place it below the scoreboard and timer */
   left: 10px; /* Align it with the scoreboard */
-  background-color: #ff4444; /* Red background for mute button */
+  background-color: #4caf50; /* Red background for mute button */
   color: white; /* White text color */
   border: none; /* Remove default button border */
   padding: 10px 20px; /* Add some padding */
@@ -416,10 +495,35 @@ body {
 }
 
 #mute-btn:hover {
-  background-color: #d32f2f; /* Slightly darker red on hover */
+  background-color: #276e2b; /* Slightly darker red on hover */
 }
 
 #mute-btn:active {
   background-color: #b71c1c; /* Even darker red when pressed */
   transform: scale(0.98); /* Slightly shrink the button on click */
+}
+
+
+#pause-btn {
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4caf50; /* Green color */
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+#pause-btn:hover {
+  background-color: #276e2b; /* Slightly darker green on hover */
+}
+
+#pause-btn:active {
+  background-color: #b71c1c; /* Even darker red when pressed */
+  transform: scale(0.98); /* Slightly smaller when clicked */
 }
